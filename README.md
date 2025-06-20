@@ -1,220 +1,216 @@
-Library Management System
-  
-A simple yet robust Library Management System built with a C# .NET backend and SQLite database. This application supports CRUD operations for managing book records and includes optional user authentication using JWT. Designed as part of an internship assignment, it demonstrates clean code, RESTful API design, and integration with Entity Framework Core.
-Table of Contents
+# 📚 Library Management System
 
-Features
-Prerequisites
-Backend Setup
-API Endpoints
-Running Locally
-Testing with Postman
-Project Structure
-License
+A simple yet robust **Library Management System** built with a **C# .NET 8 backend** and **SQLite database**, and a modern **React + TypeScript frontend** styled using **Bootstrap**. It supports full **CRUD operations** on books and includes optional **JWT-based user authentication**.
 
-Features
+---
 
-Book Management: Create, read, update, and delete book records (title, author, description).
-User Authentication: Register and login users with JWT-based authentication (optional feature).
-RESTful API: Well-documented endpoints with Swagger integration.
-SQLite Database: Lightweight database managed with Entity Framework Core.
-Secure and Scalable: Includes input validation, error handling, and CORS support.
+## 📋 Table of Contents
 
-Prerequisites
-Before setting up the project, ensure you have the following installed:
+* [Features](#features)
+* [Prerequisites](#prerequisites)
+* [Backend Setup](#backend-setup)
+* [API Endpoints](#api-endpoints)
+* [Running Locally](#running-locally)
+* [Testing with Postman](#testing-with-postman)
+* [Frontend Setup](#frontend-setup)
+* [Project Structure](#project-structure)
+* [License](#license)
 
-.NET 8.0 SDK
-Visual Studio 2022 (with .NET development workload)
-SQLite (included via NuGet packages)
-Postman (for API testing)
-Git (for version control)
+---
 
-Backend Setup
-Follow these steps to set up and run the backend:
+## 🚀 Features
 
-Clone the Repository:
+* **Book Management**: Create, read, update, and delete books.
+* **User Authentication**: Register/login with JWT tokens (optional).
+* **RESTful API**: Swagger support for testing.
+* **SQLite**: Lightweight database powered by EF Core.
+* **React + TypeScript Frontend**: Clean and modular UI.
+* **Bootstrap**: Responsive design and layout.
+
+---
+
+## 🧰 Prerequisites
+
+### Backend:
+
+* .NET 8.0 SDK
+* Visual Studio 2022 (with .NET workload)
+* SQLite (via NuGet)
+
+### Frontend:
+
+* Node.js (v16+ recommended)
+* npm or yarn
+
+---
+
+## 🔧 Backend Setup
+
+```bash
 git clone https://github.com/yourusername/LibraryManagementSystem.git
 cd LibraryManagementSystem/Backend/LibraryManagementSystem
+```
 
+1. **Open in Visual Studio 2022**
 
-Open the Solution:
+   * Load `LibraryManagementSystem.sln`
 
-Open LibraryManagementSystem.sln in Visual Studio 2022.
+2. **Restore NuGet Packages**
 
+   * Right-click solution → Restore NuGet Packages
+   * Or run: `dotnet restore`
 
-Restore NuGet Packages:
+3. **Configure JWT in `appsettings.json`**
 
-In Visual Studio, right-click the solution in Solution Explorer and select Restore NuGet Packages.
-Alternatively, run:dotnet restore
-
-
-
-
-Configure JWT Key:
-
-Open appsettings.json and replace the Jwt:Key value with a strong, unique key (at least 32 characters):"Jwt": {
+```json
+"Jwt": {
   "Key": "YourSuperSecretKeyHere1234567890abcdef",
   "Issuer": "LibraryManagementSystem",
   "Audience": "LibraryManagementSystem"
 }
+```
 
+4. **Apply Migrations**
 
-
-
-Apply Database Migrations:
-
-In the Package Manager Console (or terminal), navigate to the Backend/LibraryManagementSystem folder:cd <path-to-project>\LibraryManagementSystem\Backend\LibraryManagementSystem
-
-
-Run the following commands to create and apply migrations:dotnet ef migrations add InitialCreate
+```bash
+cd LibraryManagementSystem/Backend/LibraryManagementSystem
+dotnet ef migrations add InitialCreate
 dotnet ef database update
+```
 
+5. **Run the Backend**
 
-This creates the SQLite database (library.db) in the project folder.
+```bash
+dotnet run
+```
 
+Open: [https://localhost:7235/swagger](https://localhost:7235/swagger)
 
-Run the Backend:
+---
 
-Start the application in Visual Studio (F5) or via the terminal:dotnet run
+## 🔗 API Endpoints
 
+### 🔐 Auth
 
-The API will be available at https://localhost:7235/swagger (port may vary; check console output).
+| Method | Endpoint             | Description          |
+| ------ | -------------------- | -------------------- |
+| POST   | `/api/auth/register` | Register new user    |
+| POST   | `/api/auth/login`    | Login, get JWT token |
 
+### 📘 Books (JWT Required)
 
+| Method | Endpoint         | Description    |
+| ------ | ---------------- | -------------- |
+| GET    | `/api/book`      | Get all books  |
+| GET    | `/api/book/{id}` | Get book by ID |
+| POST   | `/api/book`      | Create a book  |
+| PUT    | `/api/book/{id}` | Update book    |
+| DELETE | `/api/book/{id}` | Delete book    |
 
-API Endpoints
-The backend provides the following RESTful API endpoints, accessible via Swagger or Postman:
-Books (Authenticated)
-All book endpoints require a JWT token in the Authorization header (Bearer <token>).
+**Example Payloads:**
 
-
-
-Method
-Endpoint
-Description
-
-
-
-GET
-/api/books
-List all book records
-
-
-GET
-/api/books/{id}
-Get a book by ID
-
-
-POST
-/api/books
-Create a new book record
-
-
-PUT
-/api/books/{id}
-Update an existing book record
-
-
-DELETE
-/api/books/{id}
-Delete a book record
-
-
-Authentication
-
-
-
-Method
-Endpoint
-Description
-
-
-
-POST
-/api/auth/register
-Register a new user
-
-
-POST
-/api/auth/login
-Login and receive a JWT token
-
-
-Example Payloads:
-
-Register:{
+```json
+// Register/Login
+{
   "username": "testuser",
   "password": "Password123!"
 }
 
-
-Login:{
-  "username": "testuser",
-  "password": "Password123!"
-}
-
-
-Create Book:{
+// Create Book
+{
   "title": "Sample Book",
   "author": "John Doe",
   "description": "A sample book description."
 }
+```
 
+---
 
+## 🖥️ Running Locally
 
-Running Locally
+1. Confirm `library.db` is created after migrations.
+2. Browse Swagger UI: [https://localhost:7235/swagger](https://localhost:7235/swagger)
+3. Use Postman for detailed testing.
 
-Verify Database:
+---
 
-Ensure library.db exists in the Backend/LibraryManagementSystem folder after running migrations.
-Use a SQLite browser (e.g., DB Browser for SQLite) to inspect the database if needed.
+## 🧪 Testing with Postman
 
+1. **Register**:
 
-Access Swagger:
+   * POST `/api/auth/register`
+   * Body:
 
-Navigate to https://localhost:7235/swagger in a browser to explore and test API endpoints interactively.
+```json
+{
+  "username": "testuser",
+  "password": "Password123!"
+}
+```
 
+2. **Login**:
 
-Test with Postman (see below).
+   * POST `/api/auth/login`
+   * Save the returned `token`
 
+3. **Test Books API**:
 
-Testing with Postman
-To test the API endpoints using Postman:
+   * Add `Authorization` header:
 
-Register a User:
-Send a POST request to https://localhost:7235/api/auth/register with the register payload.
+```
+Authorization: Bearer <your-token>
+```
 
+---
 
-Login:
-Send a POST request to https://localhost:7235/api/auth/login with the login payload.
-Copy the returned JWT token.
+## 🌐 Frontend Setup
 
+```bash
+cd LibraryManagementSystem/frontend
+npm install
+npm run dev
+```
 
-Test Book Endpoints:
-For any book-related request (e.g., GET /api/books), add an Authorization header:Authorization: Bearer <your-jwt-token>
+> Make sure the backend is running on `https://localhost:7235`.
 
+**Pages Included:**
 
-Test CRUD operations using the payloads provided above.
+* `Login`, `Register`
+* `Home` (book listing + update/delete)
+* `Add Book`, `Update Book`
 
+🔒 All book operations require login (token stored in `localStorage`).
 
+---
 
-Project Structure
+## 📁 Project Structure
+
+```
 LibraryManagementSystem/
 ├── Backend/
-│   ├── LibraryManagementSystem/
-│   │   ├── Controllers/          # API controllers (Books, Auth)
-│   │   ├── Models/               # Entity models (Book)
-│   │   ├── Data/                 # EF Core DbContext
-│   │   ├── Services/             # JWT service and business logic
-│   │   ├── Dtos/                 # Data Transfer Objects
-│   │   ├── Program.cs            # Application entry point
-│   │   ├── appsettings.json      # Configuration (JWT, DB connection)
-│   │   ├── LibraryManagementSystem.csproj
-│   ├── LibraryManagementSystem.sln
-├── .gitignore                    # Ignores build artifacts, DB files, etc.
-├── README.md                     # Project documentation
+│   └── LibraryManagementSystem/
+│       ├── Controllers/
+│       ├── Models/
+│       ├── Data/
+│       ├── Services/
+│       ├── Program.cs
+│       └── appsettings.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── types/
+│   ├── public/
+│   ├── index.html
+│   ├── App.tsx
+│   └── main.tsx
+└── README.md
+```
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
 
-Built with ❤️ by Heshan Jeewantha
+## 📄 License
+
+MIT License © 2025 Heshan Jeewantha
+
