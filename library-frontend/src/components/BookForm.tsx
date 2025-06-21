@@ -96,22 +96,76 @@ const BookForm = ({ book, onChange, onSubmit, isUpdate = false }: Props) => (
               </div>
 
               {/* Submit Button */}
-              <div className="text-center text-md-start mt-4 pt-2">
-                <button 
-                  type="submit"
+                <div className="text-center text-md-start mt-4 pt-2">
+                  <button
+                  type="button"
                   className={`btn btn-lg mb-0 px-5 ${isUpdate ? 'btn-primary' : 'btn-success'}`}
-                >
+                  onClick={() => {
+                    if (!localStorage.getItem('token')) {
+                    alert('Please login to add books.');
+                    return;
+                    }
+                    // If logged in, submit the form
+                    (document.activeElement as HTMLElement)?.blur();
+                    // Manually trigger submit
+                    const form = document.querySelector('form');
+                    // Simple validation
+                    let valid = true;
+                    const errors: Record<string, string> = {};
+                    if (!book.title.trim()) {
+                      errors.title = 'Title is required';
+                      valid = false;
+                    }
+                    if (!book.author.trim()) {
+                      errors.author = 'Author is required';
+                      valid = false;
+                    }
+                    if (!book.description.trim()) {
+                      errors.description = 'Description is required';
+                      valid = false;
+                    }
+                    // Show errors if any
+                    if (!valid) {
+                      // Find or create error elements and set messages
+                      Object.entries(errors).forEach(([field, msg]) => {
+                      let el = document.getElementById(`${field}-error`);
+                      if (!el) {
+                        el = document.createElement('div');
+                        el.id = `${field}-error`;
+                        el.className = 'text-danger small mt-1';
+                        const input = document.getElementById(field);
+                        input?.parentElement?.appendChild(el);
+                      }
+                      el.textContent = msg;
+                      });
+                      // Remove error messages for valid fields
+                      ['title', 'author', 'description'].forEach((field) => {
+                      if (!errors[field]) {
+                        const el = document.getElementById(`${field}-error`);
+                        if (el) el.remove();
+                      }
+                      });
+                      return;
+                    } else {
+                      // Remove all errors
+                      ['title', 'author', 'description'].forEach((field) => {
+                      const el = document.getElementById(`${field}-error`);
+                      if (el) el.remove();
+                      });
+                    }
+                    form && form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                    }}
+                    >
                   <i className={`fas ${isUpdate ? 'fa-save' : 'fa-plus'} me-2`}></i>
                   {isUpdate ? 'Update Book' : 'Add Book'}
-                </button>
-                
-                <div className="mt-3">
+                  </button>
+                  <div className="mt-3">
                   <small className="text-muted">
                     <i className="fas fa-info-circle me-1"></i>
                     {isUpdate ? 'Update the book information in your library' : 'Add this book to your digital library collection'}
                   </small>
+                  </div>
                 </div>
-              </div>
             </form>
           </div>
         </div>
