@@ -47,7 +47,7 @@ A simple yet robust **Library Management System** built with a **C# .NET 8 backe
 ## 🔧 Backend Setup
 
 ```bash
-git clone https://github.com/yourusername/LibraryManagementSystem.git
+git clone https://github.com/heshanjeewantha/library-management-system.git
 cd LibraryManagementSystem/Backend/LibraryManagementSystem
 ```
 
@@ -64,7 +64,7 @@ cd LibraryManagementSystem/Backend/LibraryManagementSystem
 
 ```json
 "Jwt": {
-  "Key": "YourSuperSecretKeyHere1234567890abcdef",
+  "Key": "SecretKeyHere1234567890abcdeffff",
   "Issuer": "LibraryManagementSystem",
   "Audience": "LibraryManagementSystem"
 }
